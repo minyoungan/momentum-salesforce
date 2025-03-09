@@ -12,3 +12,15 @@ trigger Trig_Registration on Registration__c (after insert, after update) {
         et4ae5.triggerUtility.automateByName('Registration__c', tsend.Name);
     }
 }
+
+
+// RegistrationTrigger.trigger
+trigger RegistrationTrigger on Registration__c (after insert, after update) {
+    if (Trigger.isAfter) {
+        if (Trigger.isInsert || Trigger.isUpdate) {
+            RegistrationTriggerHelper.processRegistrationsAsync(
+                new Set<Id>(Trigger.newMap.keySet())
+            );
+        }
+    }
+}
